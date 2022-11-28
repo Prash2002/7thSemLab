@@ -97,6 +97,7 @@ A might have to send many different types of messages to B. Instead of B having 
 
 ## Broadcast
  During a broadcast, one process sends the same data to all processes in a communicator. One of the main uses of broadcasting is to send out user input to a parallel program, or send out configuration parameters to all processes.
+ 
  ![image](https://user-images.githubusercontent.com/56592188/201580389-b6351944-bb07-4fd1-9e62-3b4c58783ecc.png)
  
  ```c
@@ -109,7 +110,64 @@ A might have to send many different types of messages to B. Instead of B having 
 
  ```
  
- ## Gather Scatter Reduce Barrier
+ ## Scatter 
+ MPI_Scatter is a collective routine that is very similar to MPI_Bcast. MPI_Scatter involves a designated root process sending data to all processes in a communicator. MPI_Bcast sends the same piece of data to all processes while MPI_Scatter sends chunks of an array to different processes.
+ 
+![image](https://user-images.githubusercontent.com/56592188/204192115-d38df44e-f14a-4a96-88e9-05a050af284d.png)
+
+ ```c
+ MPI_Scatter(
+    void* send_data,
+    int send_count,
+    MPI_Datatype send_datatype,
+    void* recv_data,
+    int recv_count,
+    MPI_Datatype recv_datatype,
+    int root,
+    MPI_Comm communicator)
+
+ ```
+ ## Gather
+  MPI_Gather is the inverse of MPI_Scatter. Instead of spreading elements from one process to many processes, MPI_Gather takes elements from many processes and gathers them to one single process. Used in parallel sorting and searching.
+ 
+ ![image](https://user-images.githubusercontent.com/56592188/204192520-f58f2bf9-54c1-4cc4-a328-449103294a2e.png)
+
+```c
+MPI_Gather(
+    void* send_data,
+    int send_count,
+    MPI_Datatype send_datatype,
+    void* recv_data,
+    int recv_count,
+    MPI_Datatype recv_datatype,
+    int root,
+    MPI_Comm communicator)
+
+```
+ 
+ ## Reduce 
+ Similar to MPI_Gather, MPI_Reduce takes an array of input elements on each process and returns an array of output elements to the root process. The output elements contain the reduced result.
+ 
+ ```c
+ MPI_Reduce(
+    void* send_data,
+    void* recv_data,
+    int count,
+    MPI_Datatype datatype,
+    MPI_Op op,
+    int root,
+    MPI_Comm communicator)
+ ```
+ 
+ ![image](https://user-images.githubusercontent.com/56592188/204193140-80122188-3a69-480c-82d1-011e17ad2ff9.png)
+
+ 
+ ## Barrier
+ Blocks until all processes in the communicator have reached this routine. 
+ 
+ ```c
+ int MPI_Barrier( MPI_Comm comm )
+ ```
 
 ## References
 https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/
